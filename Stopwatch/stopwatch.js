@@ -66,4 +66,6 @@ buttonReset.onclick = function(){
     hour = "00";
     appendSecond.innerHTML = second;
     appendTens.innerHTML = tens;
+    appendMinute = minute;
+    appendHour = hour;
 }
