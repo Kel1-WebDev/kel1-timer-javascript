@@ -62,6 +62,8 @@ buttonReset.onclick = function(){
     clearInterval(interval);
     tens = "00";
     second = "00";
+    minute = "00";
+    hour = "00";
     appendSecond.innerHTML = second;
     appendTens.innerHTML = tens;
 }
