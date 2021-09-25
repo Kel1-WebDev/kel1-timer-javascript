@@ -13,23 +13,14 @@ var buttonStop = document.getElementById("stop");
 var buttonReset = document.getElementById("reset");
 
 var interval;
+const btn = document.getElementById("start");
 
-function startTimer() {
-    tens++;
-
-    if (tens < 9) {
-        appendTens.innerHTML = "0" + tens;
-    }
-
-    if (tens > 9) {
-        appendTens.innerHTML = tens;
-    }
-
-    if (tens > 99) {
+function startTimer(){
+    tens ++;
+    if (tens>999){
         second++;
         appendSecond.innerHTML = "0" + second;
         tens = 0;
-        appendTens.innerHTML = "0" + 0;
     }
 
     if (second > 9) {
@@ -41,8 +32,7 @@ function startTimer() {
         appendMinute.innerHTML = "0" + minute;
         tens = 0;
         second = 0;
-        appendTens.innerHTML = "0" + 0;
-        appendSecond.innerHTML = "0" + 0;
+        appendSecond.innerHTML = "0"+0;
     }
 
     if (minute > 9) {
@@ -56,8 +46,6 @@ function startTimer() {
         tens = 0;
         second = 0;
         minute = 0;
-
-        appendTens.innerHTML = "0" + 0;
         appendSecond.innerHTML = "0" + 0;
         appendMinute.innerHTML = "0" + 0;
     }
@@ -73,14 +61,21 @@ buttonStop.onclick = function () {
 
 buttonReset.onclick = function () {
     clearInterval(interval);
-
     second = "00";
     tens = "00";
     minute = "00";
     hour = "00";
-
-    appendTens.innerHTML = tens;
     appendSecond.innerHTML = second;
     appendMinute.innerHTML = minute;
     appendHour.innerHTML = hour;
 }
+
+
+btn.addEventListener("click",()=>{
+    if(btn.value=='start'){
+        btn.value ='pause';
+    }
+    else if (btn.value=='pause'){
+        btn.value ='resume';
+    }
+});
