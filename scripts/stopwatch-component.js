@@ -1,62 +1,107 @@
-const stopwatchTemplate = document.createElement('template');
-stopwatchTemplate.innerHTML = `
-        <div id="stopwatch">
-            <p>
-                <span id="hour">00</span> : 
-                <span id="minute">00</span> : 
-                <span id="second">00</span> : 
-                <span id="tens">00</span>
-            </p>
-            <button id="start">Start</button>
-            <button id="stop">Stop</button>
-            <button id="reset">Reset</button>
-        </div>
-`
+const template = document.createElement('template');
+
+template.innerHTML = `
+    <div>
+		<p name>0<p>
+		<p time>0<p>
+		<button start>Start</button>
+		<button stop>Stop</button>
+    </div>
+  `;
 
 class Stopwatch extends HTMLElement {
     constructor() {
         super();
-        // this.startTimer = this.startTimer.bind(this)
 
-        this.attachShadow({mode:'open'});
-        this.shadowRoot.appendChild(stopwatchTemplate.content.cloneNode(true));
-        
-        this.startBtn = this.shadowRoot.querySelector('#start');
-        this.stopBtn = this.shadowRoot.querySelector('#stop');
-        this.resetBtn = this.shadowRoot.querySelector('#reset');
+        this.start = this.start.bind(this);
+        this.stop = this.stop.bind(this);
+        this.incrementTime = this.incrementTime.bind(this);
 
-        this.tens = this.shadowRoot.querySelector('#tens');
-        this.minute = this.shadowRoot.querySelector('#minute');
-        this.second = this.shadowRoot.querySelector('#second');
-        this.hour = this.shadowRoot.querySelector('#hour');
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+        this.startBtn = this.shadowRoot.querySelector('[start]');
+        this.stopBtn = this.shadowRoot.querySelector('[stop]');
+
+        this.timeDisplay = this.shadowRoot.querySelector('[time]');
+        this.nameDisplay = this.shadowRoot.querySelector('[name]');
     }
 
-    connectedCallback(){
-        this.startBtn.addEventListener('click', this.startTimer);
+    connectedCallback() {
+        this.startBtn.addEventListener('click', this.start);
+        this.stopBtn.addEventListener('click', this.stop);
+
+        if (!this.hasAttribute('state')) {
+            this.setAttribute('state', 'stop');
+        }
+
+        if (!this.hasAttribute('time')) {
+            this.setAttribute('time', 0);
+        }
     }
 
-    attributeChangedCallback(){
+    insertZero(time) {
+        if (time < 10)
+            return "0" + time;
 
-    }    
-
-    static get observedAttributes(){
-        return ['tens', 'second', 'minute', 'hour'];
+        return time;
     }
 
-    // set tens(){}
-    // get tens(){}
+    formatTime(second) {
+        let divisor = 60 * 60;
 
-    // set second(){}
-    // get second(){}
+        const hour = Math.floor(second / divisor);
+        second = second % divisor;
+        divisor = divisor / 60;
 
-    // set minute(){}
-    // get minute(){}
+        const minute = Math.floor(second / divisor);
+        second = second % divisor;
 
-    // set hour(){}
-    // get hour(){}
+        return this.insertZero(hour) + ":" + this.insertZero(minute) + ":" + this.insertZero(second);
+    }
 
-    // startTimer() {
-    // }
+    incrementTime() {
+        this.setAttribute('time', parseInt(this.getAttribute('time')) + 1);
+    }
+
+    start() {
+        const state = this.getAttribute('state');
+
+        if ((state === 'pause') || (state === 'stop')) {
+            this.setAttribute('state', 'start');
+            this.interval = setInterval(this.incrementTime, 1000);
+
+            this.startBtn.innerText = 'Pause';
+        } else if (state === 'start') {
+            this.setAttribute('state', 'pause');
+            clearInterval(this.interval);
+
+            this.startBtn.innerText = 'Resume';
+        }
+    }
+
+    stop() {
+        this.setAttribute('state', 'stop');
+        clearInterval(this.interval);
+
+        this.setAttribute('time', 0);
+
+        this.startBtn.innerText = 'Start';
+    }
+
+    static get observedAttributes() {
+        return ['time'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        this.nameDisplay.innerText = this.getAttribute('name');
+        this.timeDisplay.innerText = this.formatTime(this.getAttribute('time'));
+    }
+
+    disconnectedCallback() {
+        this.startBtn.removeEventListener('click', this.start);
+        this.stopBtn.removeEventListener('click', this.stop);
+    }
 }
 
-customElements.define('stopwatch-custom', Stopwatch)
+window.customElements.define('stopwatch-custom', Stopwatch);
