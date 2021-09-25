@@ -50,7 +50,6 @@ function startTimer(){
         appendMinute.innerHTML = "0" + 0;
     }
 }
-
 buttonStart.onclick = function () {
     interval = setInterval(startTimer);
 };
