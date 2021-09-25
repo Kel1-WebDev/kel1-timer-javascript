@@ -14,7 +14,7 @@ const btn = document.getElementById("start");
 
 function startTimer(){
     tens ++;
-    if (tens>99){
+    if (tens>999){
         second++;
         appendSecond.innerHTML = "0"+second;
         tens = 0;
