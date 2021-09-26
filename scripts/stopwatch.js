@@ -14,6 +14,7 @@ var buttonReset = document.getElementById("reset");
 
 var interval;
 const btn = document.getElementById("start");
+const hty = document.querySelector(".history");
 
 function startTimer(){
     tens ++;
@@ -55,6 +56,10 @@ buttonStart.onclick = function () {
 };
 
 buttonStop.onclick = function () {
+    const hist = document.createElement("div");
+    hist.innerText = hour + " : " + minute + " : " + second;
+    hty.appendChild(hist);
+    
     clearInterval(interval);
 };
 
