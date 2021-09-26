@@ -28,6 +28,7 @@ class Stopwatch extends HTMLElement {
 
         this.timeDisplay = this.shadowRoot.querySelector('[time]');
         this.nameDisplay = this.shadowRoot.querySelector('[name]');
+        this.historyDisplay = this.shadowRoot.querySelector('[history]');
     }
 
     connectedCallback() {
@@ -86,23 +87,29 @@ class Stopwatch extends HTMLElement {
     stop() {
         this.setAttribute('state', 'stop');
         clearInterval(this.interval);
-
-        console.log(this.getAttribute('time'));
-        localStorage.setItem('history', this.getAttribute('time'));
-
-        console.log(localStorage.getItem('timer'));
         
+        //history
+        console.log(this.getAttribute('time'))
+        localStorage.setItem('history', this.getAttribute('time'));
+        console.log(localStorage.getItem('timer'));
+
         let timer = JSON.parse(localStorage.getItem('timer'));
         for (let i = 0; i<timer.length; i++) {
             if (timer[i].name === this.getAttribute('name')) {
                timer[i].history.push(this.getAttribute('time'));
-                //console.log(timer[i].history);
             }
         }
-        localStorage.setItem('timer', JSON.stringify(timer));
 
-        this.setAttribute('time', 0);
+        localStorage.setItem('timer', JSON.stringify(timer));
         
+        //show history
+        const history = document.createElement("li");
+        history.innerText = this.formatTime(this.getAttribute('time'));
+        this.historyDisplay.appendChild(history);
+        
+        //reset
+        this.setAttribute('time', 0);
+
         this.startBtn.innerText = 'Start';
     }
 
