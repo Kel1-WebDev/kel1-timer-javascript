@@ -6,6 +6,9 @@ template.innerHTML = `
 		<p time>0<p>
 		<button start>Start</button>
 		<button stop>Stop</button>
+        <div>
+            <p history>History</p>
+        </div>
     </div>
   `;
 
@@ -84,8 +87,22 @@ class Stopwatch extends HTMLElement {
         this.setAttribute('state', 'stop');
         clearInterval(this.interval);
 
-        this.setAttribute('time', 0);
+        console.log(this.getAttribute('time'));
+        localStorage.setItem('history', this.getAttribute('time'));
 
+        console.log(localStorage.getItem('timer'));
+        
+        let timer = JSON.parse(localStorage.getItem('timer'));
+        for (let i = 0; i<timer.length; i++) {
+            if (timer[i].name === this.getAttribute('name')) {
+               timer[i].history.push(this.getAttribute('time'));
+                //console.log(timer[i].history);
+            }
+        }
+        localStorage.setItem('timer', JSON.stringify(timer));
+
+        this.setAttribute('time', 0);
+        
         this.startBtn.innerText = 'Start';
     }
 
