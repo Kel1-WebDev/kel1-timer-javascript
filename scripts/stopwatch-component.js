@@ -31,8 +31,19 @@ class Stopwatch extends HTMLElement {
         this.startBtn.addEventListener('click', this.start);
         this.stopBtn.addEventListener('click', this.stop);
 
-        if (!this.hasAttribute('state')) {
-            this.setAttribute('state', 'stop');
+        let state = this.getLocalData('state');
+
+        this.setAttribute('state', state);
+
+        if (state === 'pause') {
+            this.startBtn.innerText = 'Resume';
+            this.setAttribute('time', this.getLocalData('duration'))
+            
+        } else if (state === 'start') {
+            this.setAttribute('time', this.getDuration());
+            this.interval = setInterval(this.incrementTime, 1000);
+
+            this.startBtn.innerText = 'Pause';
         }
 
         if (!this.hasAttribute('time')) {
@@ -62,6 +73,7 @@ class Stopwatch extends HTMLElement {
 
     incrementTime() {
         this.setAttribute('time', parseInt(this.getAttribute('time')) + 1);
+        this.setLocalData();
     }
 
     start() {
@@ -76,6 +88,8 @@ class Stopwatch extends HTMLElement {
             this.setAttribute('state', 'pause');
             clearInterval(this.interval);
 
+            this.setLocalData();
+
             this.startBtn.innerText = 'Resume';
         }
     }
@@ -84,7 +98,19 @@ class Stopwatch extends HTMLElement {
         this.setAttribute('state', 'stop');
         clearInterval(this.interval);
 
+        let timer = JSON.parse(localStorage.getItem('timer'));
+
+        for (let i = 0; i<timer.length; i++) {
+            if (timer[i].name === this.getAttribute('name')) {
+                timer[i].history.push(this.getAttribute('time'));
+            }
+        }
+
+        localStorage.setItem('timer', JSON.stringify(timer));
+
         this.setAttribute('time', 0);
+
+        this.setLocalData();
 
         this.startBtn.innerText = 'Start';
     }
@@ -102,6 +128,73 @@ class Stopwatch extends HTMLElement {
         this.startBtn.removeEventListener('click', this.start);
         this.stopBtn.removeEventListener('click', this.stop);
     }
+
+    getLocalData(key) {
+        let state = "";
+        let duration = 0
+
+        let timer = JSON.parse(localStorage.getItem('timer'));
+
+        for (let i = 0; i<timer.length; i++) {
+            if (timer[i].name === this.getAttribute('name')) {
+                state = timer[i].state;
+                duration = parseInt(timer[i].time);
+            }
+        }
+
+        switch (key) {
+            case "state" :
+                return state;
+                break;
+            case "duration" :
+                return duration;
+                break;
+        }
+    }
+
+    getDuration() {
+        let duration = this.getLocalData("duration");
+        let closedTime = new Date(localStorage.getItem('closed-time'));
+
+        let totalDuration = ((new Date().getTime() - closedTime.getTime()) / 1000) + duration;
+        return Math.floor(totalDuration);
+    }
+
+    setLocalData() {
+        let timer = JSON.parse(localStorage.getItem('timer'));
+
+        for (let i = 0; i<timer.length; i++) {
+            if (timer[i].name === this.getAttribute('name')) {
+                timer[i].state = this.getAttribute('state');
+                timer[i].time = this.getAttribute('time');
+            }
+        }
+
+        localStorage.setItem('timer', JSON.stringify(timer));
+    }
 }
 
 window.customElements.define('stopwatch-custom', Stopwatch);
+
+window.addEventListener('beforeunload', function (e) {
+	e.preventDefault()
+
+	localStorage.setItem('closed-time', new Date());
+});
+
+// const timer = [
+//     {
+//         name: "PCD",
+//         history: ["5"],
+//         state: "start",
+//         time: "100",
+//     },
+//     {
+//         name: "WebDev",
+//         history: ["100", "3600", "10"],
+//         state: "pause",
+//         time: "500",
+//     }
+// ]
+
+// localStorage.setItem('timer', JSON.stringify(timer));
