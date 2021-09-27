@@ -51,6 +51,18 @@ class Stopwatch extends HTMLElement {
         }
     }
 
+    deactivateSiblings() {
+        let sibling = this.parentNode.firstChild;
+
+        while (sibling) {
+            if ((sibling !== this) && (sibling.getAttribute('state') === 'start')) {
+                sibling.start();
+            }
+
+            sibling = sibling.nextSibling;
+        }
+    }
+
     insertZero(time) {
         if (time < 10)
             return "0" + time;
@@ -84,6 +96,8 @@ class Stopwatch extends HTMLElement {
             this.interval = setInterval(this.incrementTime, 1000);
 
             this.startBtn.innerText = 'Pause';
+
+            this.deactivateSiblings();
         } else if (state === 'start') {
             this.setAttribute('state', 'pause');
             clearInterval(this.interval);
