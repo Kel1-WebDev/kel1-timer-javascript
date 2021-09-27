@@ -49,6 +49,14 @@ class Stopwatch extends HTMLElement {
         if (!this.hasAttribute('time')) {
             this.setAttribute('time', 0);
         }
+
+        console.log(this.getAttribute('history').split(','));
+        this.getAttribute('history').split(',').forEach((value)=>{
+            const history = document.createElement("li");
+            history.innerText = this.formatTime(value);
+            this.historyDisplay.appendChild(history);
+        })
+
     }
 
     deactivateSiblings() {

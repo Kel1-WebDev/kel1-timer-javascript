@@ -81,7 +81,7 @@ class StopwatchList extends HTMLElement {
         localStorage.setItem('timer', JSON.stringify(timer));
     }
 
-    loadStopwatch() {
+    loadStopwatch() {  //untuk memanggil stopwatch dari local storage ketika tab dibuka
         let timer = JSON.parse(localStorage.getItem('timer'));
 
         for (let i = 0; i < timer.length; i++) {
@@ -90,6 +90,7 @@ class StopwatchList extends HTMLElement {
             stopwatch.setAttribute('name', timer[i].name);
             stopwatch.setAttribute('state', timer[i].state);
             stopwatch.setAttribute('time', timer[i].time);
+            stopwatch.setAttribute('history', timer[i].history);
             this.container.appendChild(stopwatch);
         }
     }
