@@ -31,14 +31,10 @@ class Stopwatch extends HTMLElement {
         this.startBtn.addEventListener('click', this.start);
         this.stopBtn.addEventListener('click', this.stop);
 
-        let state = this.getLocalData('state');
-
-        this.setAttribute('state', state);
+        const state = this.getAttribute('state');
 
         if (state === 'pause') {
             this.startBtn.innerText = 'Resume';
-            this.setAttribute('time', this.getLocalData('duration'))
-            
         } else if (state === 'start') {
             this.setAttribute('time', this.getDuration());
             this.interval = setInterval(this.incrementTime, 1000);
@@ -100,7 +96,7 @@ class Stopwatch extends HTMLElement {
 
         let timer = JSON.parse(localStorage.getItem('timer'));
 
-        for (let i = 0; i<timer.length; i++) {
+        for (let i = 0; i < timer.length; i++) {
             if (timer[i].name === this.getAttribute('name')) {
                 timer[i].history.push(this.getAttribute('time'));
             }
@@ -131,11 +127,11 @@ class Stopwatch extends HTMLElement {
 
     getLocalData(key) {
         let state = "";
-        let duration = 0
+        let duration = 0;
 
         let timer = JSON.parse(localStorage.getItem('timer'));
 
-        for (let i = 0; i<timer.length; i++) {
+        for (let i = 0; i < timer.length; i++) {
             if (timer[i].name === this.getAttribute('name')) {
                 state = timer[i].state;
                 duration = parseInt(timer[i].time);
@@ -143,12 +139,10 @@ class Stopwatch extends HTMLElement {
         }
 
         switch (key) {
-            case "state" :
+            case "state":
                 return state;
-                break;
-            case "duration" :
+            case "duration":
                 return duration;
-                break;
         }
     }
 
@@ -163,7 +157,7 @@ class Stopwatch extends HTMLElement {
     setLocalData() {
         let timer = JSON.parse(localStorage.getItem('timer'));
 
-        for (let i = 0; i<timer.length; i++) {
+        for (let i = 0; i < timer.length; i++) {
             if (timer[i].name === this.getAttribute('name')) {
                 timer[i].state = this.getAttribute('state');
                 timer[i].time = this.getAttribute('time');
@@ -175,26 +169,3 @@ class Stopwatch extends HTMLElement {
 }
 
 window.customElements.define('stopwatch-custom', Stopwatch);
-
-window.addEventListener('beforeunload', function (e) {
-	e.preventDefault()
-
-	localStorage.setItem('closed-time', new Date());
-});
-
-// const timer = [
-//     {
-//         name: "PCD",
-//         history: ["5"],
-//         state: "start",
-//         time: "100",
-//     },
-//     {
-//         name: "WebDev",
-//         history: ["100", "3600", "10"],
-//         state: "pause",
-//         time: "500",
-//     }
-// ]
-
-// localStorage.setItem('timer', JSON.stringify(timer));

@@ -8,14 +8,17 @@
 	<title>Document</title>
 	<script src="scripts/stopwatch-list.js"></script>
 	<script src="scripts/stopwatch-component.js"></script>
-	
-	
+	<script>
+		window.addEventListener('beforeunload', function (e) {
+			e.preventDefault()
+
+			localStorage.setItem('closed-time', new Date());
+		});
+	</script>
 </head>
 
 <body>
 	<stopwatch-list></stopwatch-list>
-	<!-- <stopwatch-custom name="PCD"></stopwatch-custom>
-	<stopwatch-custom name="WebDev"></stopwatch-custom> -->
 </body>
 
 </html>
