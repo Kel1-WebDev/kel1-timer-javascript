@@ -6,6 +6,9 @@ template.innerHTML = `
 		<p time>0<p>
 		<button start>Start</button>
 		<button stop>Stop</button>
+        <div>
+            <p history>History</p>
+        </div>
     </div>
   `;
 
@@ -25,6 +28,7 @@ class Stopwatch extends HTMLElement {
 
         this.timeDisplay = this.shadowRoot.querySelector('[time]');
         this.nameDisplay = this.shadowRoot.querySelector('[name]');
+        this.historyDisplay = this.shadowRoot.querySelector('[history]');
     }
 
     connectedCallback() {
@@ -94,16 +98,22 @@ class Stopwatch extends HTMLElement {
         this.setAttribute('state', 'stop');
         clearInterval(this.interval);
 
+        //history
         let timer = JSON.parse(localStorage.getItem('timer'));
-
-        for (let i = 0; i < timer.length; i++) {
+        for (let i = 0; i<timer.length; i++) {
             if (timer[i].name === this.getAttribute('name')) {
-                timer[i].history.push(this.getAttribute('time'));
+               timer[i].history.push(this.getAttribute('time'));
             }
         }
 
         localStorage.setItem('timer', JSON.stringify(timer));
 
+        //show history
+        const history = document.createElement("li");
+        history.innerText = this.formatTime(this.getAttribute('time'));
+        this.historyDisplay.appendChild(history);
+
+        //reset
         this.setAttribute('time', 0);
 
         this.setLocalData();
