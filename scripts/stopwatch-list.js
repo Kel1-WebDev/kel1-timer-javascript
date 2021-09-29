@@ -35,7 +35,13 @@ class StopwatchList extends HTMLElement {
         this.submitButton = this.shadowRoot.querySelector('#submit');
         this.container = this.shadowRoot.querySelector('#container');
 
-        this.loadStopwatch();
+        let timer = JSON.parse(localStorage.getItem('timer'));
+
+        if (timer) {
+            this.loadStopwatch(timer);
+        } else {
+            localStorage.setItem('timer', JSON.stringify([]));
+        }
     }
 
     connectedCallback() {
@@ -81,19 +87,15 @@ class StopwatchList extends HTMLElement {
         localStorage.setItem('timer', JSON.stringify(timer));
     }
 
-    loadStopwatch() {  //untuk memanggil stopwatch dari local storage ketika tab dibuka
-        let timer = JSON.parse(localStorage.getItem('timer'));
+    loadStopwatch(timer) {  //untuk memanggil stopwatch dari local storage ketika tab dibuka
+        for (let i = 0; i < timer.length; i++) {
+            const stopwatch = document.createElement('stopwatch-custom');
 
-        if (timer) {
-            for (let i = 0; i < timer.length; i++) {
-                const stopwatch = document.createElement('stopwatch-custom');
-
-                stopwatch.setAttribute('name', timer[i].name);
-                stopwatch.setAttribute('state', timer[i].state);
-                stopwatch.setAttribute('time', timer[i].time);
-                stopwatch.setAttribute('history', timer[i].history);
-                this.container.appendChild(stopwatch);
-            }
+            stopwatch.setAttribute('name', timer[i].name);
+            stopwatch.setAttribute('state', timer[i].state);
+            stopwatch.setAttribute('time', timer[i].time);
+            stopwatch.setAttribute('history', timer[i].history);
+            this.container.appendChild(stopwatch);
         }
     }
 }
