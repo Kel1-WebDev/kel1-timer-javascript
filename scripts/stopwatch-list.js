@@ -2,19 +2,25 @@ const stopwatchListTemplate = document.createElement('template');
 
 stopwatchListTemplate.innerHTML = `
     <style>
+        @import url("styles/main.css");
         @import url("styles/form.css");
     </style>
     <div>
-        <h3>Press the + button for create new stopwatch!</h3>
-        <div id="container"></div>
-        <button add>+</button>
-        <div id="form" style="display:none">
-            <form>
-                <h2>CREATE NEW STOPWATCH</h2>
-                <label for="stopwatch-name">Insert a new stopwatch's label</label>
-                <input type="text" id="stopwatch-name" name="stopwatch-name" placeholder="Enter the label">
-                <input id="submit" type="button" value="Create Stopwatch">
-            </form>
+        <div class="center-content">
+            <h1 id="title">cronômetro</h1>
+        </div>
+        <div class="row">
+            <div id="container"></div>
+            <div>
+                <div id="form">
+                    <form>
+                        <h2>CREATE NEW STOPWATCH</h2>
+                        <label for="stopwatch-name">Insert a new stopwatch's label</label>
+                        <input type="text" id="stopwatch-name" name="stopwatch-name" placeholder="Enter the label">
+                        <input id="submit" type="button" value="Create Stopwatch">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 `
@@ -25,10 +31,8 @@ class StopwatchList extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(stopwatchListTemplate.content.cloneNode(true));
 
-        this.add = this.add.bind(this);
         this.createStopwatch = this.createStopwatch.bind(this);
 
-        this.addBtn = this.shadowRoot.querySelector('[add]');
         this.form = this.shadowRoot.querySelector('#form');
         this.stopwatchName = this.shadowRoot.querySelector('#stopwatch-name');
 
@@ -46,12 +50,7 @@ class StopwatchList extends HTMLElement {
     }
 
     connectedCallback() {
-        this.addBtn.addEventListener('click', this.add);
         this.submitButton.addEventListener('click', this.createStopwatch);
-    }
-
-    add() {
-        this.form.setAttribute('style', "display:initial");
     }
 
     createStopwatch() {
@@ -64,7 +63,6 @@ class StopwatchList extends HTMLElement {
 
         this.container.appendChild(stopwatch);
 
-        this.form.setAttribute('style', "display:none");
         this.stopwatchName.value = "";
 
         let timer = JSON.parse(localStorage.getItem('timer'));
