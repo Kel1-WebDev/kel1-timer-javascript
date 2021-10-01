@@ -54,29 +54,6 @@ class Stopwatch extends HTMLElement {
         if (!this.hasAttribute('time')) {
             this.setAttribute('time', 0);
         }
-
-        if (this.getAttribute('history').length > 0) {
-            this.getAttribute('history').split(',').forEach((value)=>{
-                const history = document.createElement("li");
-                history.innerText = this.formatTime(value);
-                this.historyDisplay.appendChild(history);
-            })
-        }
-    }
-
-    deleteTimer() {
-        // remove from DOM
-        const parent = this.parentNode;
-        parent.removeChild(this);
-
-        // remove from LocalStorage
-        let timer = JSON.parse(localStorage.getItem('timer'));
-
-        timer = timer.filter((value) => {
-            return (("stopwatch-" + value.id) !== this.getAttribute('id'));
-        });
-
-        localStorage.setItem('timer', JSON.stringify(timer));
     }
 
     deactivateSiblings() {
@@ -139,16 +116,6 @@ class Stopwatch extends HTMLElement {
     stop() {
         this.setAttribute('state', 'stop');
         clearInterval(this.interval);
-
-        //history
-        let timer = JSON.parse(localStorage.getItem('timer'));
-        for (let i = 0; i<timer.length; i++) {
-            if (timer[i].name === this.getAttribute('name')) {
-               timer[i].history.push(this.getAttribute('time'));
-            }
-        }
-
-        localStorage.setItem('timer', JSON.stringify(timer));
 
         //show history
         const history = document.createElement("li");
