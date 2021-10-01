@@ -13,7 +13,7 @@ stopwatchListTemplate.innerHTML = `
             <form>
                 <h2>CREATE NEW STOPWATCH</h2>
                 <label for="stopwatch-name">Insert a new stopwatch's label</label>
-                <input type="text" id="name" name="stopwatch-name" placeholder="Enter the label">
+                <input type="text" id="stopwatch-name" name="stopwatch-name" placeholder="Enter the label">
                 <input id="submit" type="button" value="Create Stopwatch">
             </form>
         </div>
@@ -75,7 +75,6 @@ class StopwatchList extends HTMLElement {
             name: stopwatchName,
             state: 'stop',
             time: '0',
-            history: []
         })
 
         localStorage.setItem('timer', JSON.stringify(timer));
@@ -98,7 +97,6 @@ class StopwatchList extends HTMLElement {
             stopwatch.setAttribute('name', timer[i].name);
             stopwatch.setAttribute('state', timer[i].state);
             stopwatch.setAttribute('time', timer[i].time);
-            stopwatch.setAttribute('history', timer[i].history);
             this.container.appendChild(stopwatch);
         }
     }
