@@ -8,7 +8,6 @@ stopwatchListTemplate.innerHTML = `
         <h3>Press the + button for create new stopwatch!</h3>
         <div id="container"></div>
         <button add>+</button>
-        <button id="remove">-</button>
         <div id="form" style="display:none">
             <form>
                 <h2>CREATE NEW STOPWATCH</h2>
@@ -20,7 +19,6 @@ stopwatchListTemplate.innerHTML = `
     </div>
 `
 class StopwatchList extends HTMLElement {
-
     constructor() {
         super();
 
@@ -29,10 +27,8 @@ class StopwatchList extends HTMLElement {
 
         this.add = this.add.bind(this);
         this.createStopwatch = this.createStopwatch.bind(this);
-        this.remove = this.remove.bind(this);
 
         this.addBtn = this.shadowRoot.querySelector('[add]');
-        this.removeBtn = this.shadowRoot.querySelector('#remove')
         this.form = this.shadowRoot.querySelector('#form');
         this.stopwatchName = this.shadowRoot.querySelector('#stopwatch-name');
 
@@ -45,13 +41,13 @@ class StopwatchList extends HTMLElement {
             this.loadStopwatch(timer);
         } else {
             localStorage.setItem('timer', JSON.stringify([]));
+            this.lastTimerId = 0;
         }
     }
 
     connectedCallback() {
         this.addBtn.addEventListener('click', this.add);
         this.submitButton.addEventListener('click', this.createStopwatch);
-        this.removeBtn.addEventListener('click', this.remove);
     }
 
     add() {
@@ -62,8 +58,10 @@ class StopwatchList extends HTMLElement {
         var stopwatchName = this.stopwatchName.value;
         const stopwatch = document.createElement('stopwatch-custom');
 
+        stopwatch.setAttribute('id', "stopwatch-" + this.lastTimerId);
         stopwatch.setAttribute('name', stopwatchName);
         stopwatch.setAttribute('state', 'stop');
+
         this.container.appendChild(stopwatch);
 
         this.form.setAttribute('style', "display:none");
@@ -72,34 +70,35 @@ class StopwatchList extends HTMLElement {
         let timer = JSON.parse(localStorage.getItem('timer'));
 
         timer.push({
+            id: this.lastTimerId,
             name: stopwatchName,
             state: 'stop',
             time: '0',
         })
 
         localStorage.setItem('timer', JSON.stringify(timer));
+        this.lastTimerId++;
     }
 
-    remove() {
-        this.container.removeChild(this.container.childNodes[0]);
+    //untuk memanggil stopwatch dari local storage ketika tab dibuka
+    loadStopwatch(timer) {
+        if (timer.length > 0) {
+            this.lastTimerId = timer[timer.length - 1].id + 1;
+        } else {
+            this.lastTimerId = 0;
+        }
 
-        let timer = JSON.parse(localStorage.getItem('timer'));
-
-        timer.shift();
-
-        localStorage.setItem('timer', JSON.stringify(timer));
-    }
-
-    loadStopwatch(timer) {  //untuk memanggil stopwatch dari local storage ketika tab dibuka
         for (let i = 0; i < timer.length; i++) {
             const stopwatch = document.createElement('stopwatch-custom');
 
+            stopwatch.setAttribute('id', "stopwatch-" + timer[i].id);
             stopwatch.setAttribute('name', timer[i].name);
             stopwatch.setAttribute('state', timer[i].state);
             stopwatch.setAttribute('time', timer[i].time);
+
             this.container.appendChild(stopwatch);
         }
     }
 }
 
-window.customElements.define('stopwatch-list', StopwatchList)
+window.customElements.define('stopwatch-list', StopwatchList);

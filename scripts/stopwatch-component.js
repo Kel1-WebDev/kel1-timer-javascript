@@ -3,6 +3,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <div>
 		<p name>0<p>
+		<button delete>-</button>
 		<p time>0<p>
 		<button start>Start</button>
 		<button stop>Stop</button>
@@ -19,12 +20,15 @@ class Stopwatch extends HTMLElement {
         this.start = this.start.bind(this);
         this.stop = this.stop.bind(this);
         this.incrementTime = this.incrementTime.bind(this);
+        this.deleteTimer = this.deleteTimer.bind(this);
 
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.startBtn = this.shadowRoot.querySelector('[start]');
         this.stopBtn = this.shadowRoot.querySelector('[stop]');
+
+        this.deleteBtn = this.shadowRoot.querySelector('[delete]');
 
         this.timeDisplay = this.shadowRoot.querySelector('[time]');
         this.nameDisplay = this.shadowRoot.querySelector('[name]');
@@ -34,6 +38,7 @@ class Stopwatch extends HTMLElement {
     connectedCallback() {
         this.startBtn.addEventListener('click', this.start);
         this.stopBtn.addEventListener('click', this.stop);
+        this.deleteBtn.addEventListener('click', this.deleteTimer);
 
         const state = this.getAttribute('state');
 
