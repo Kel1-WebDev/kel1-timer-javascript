@@ -1,6 +1,9 @@
 const stopwatchListTemplate = document.createElement('template');
 
 stopwatchListTemplate.innerHTML = `
+    <style>
+        @import url("styles/form.css");
+    </style>
     <div>
         <h3>Press the + button for create new stopwatch!</h3>
         <div id="container"></div>
@@ -8,9 +11,10 @@ stopwatchListTemplate.innerHTML = `
         <button id="remove">-</button>
         <div id="form" style="display:none">
             <form>
-                <label for="stopwatch-name">Insert stopwatch name</label>
-                <input type="text" id="stopwatch-name" name="stopwatch-name">
-                <input id="submit" type="button" value="Submit">
+                <h2>CREATE NEW STOPWATCH</h2>
+                <label for="stopwatch-name">Insert a new stopwatch's label</label>
+                <input type="text" id="name" name="stopwatch-name" placeholder="Enter the label">
+                <input id="submit" type="button" value="Create Stopwatch">
             </form>
         </div>
     </div>
