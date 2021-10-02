@@ -34,6 +34,7 @@ class StopwatchList extends HTMLElement {
         this.shadowRoot.appendChild(stopwatchListTemplate.content.cloneNode(true));
 
         this.createStopwatch = this.createStopwatch.bind(this);
+        this.enableCreateButton = this.enableCreateButton.bind(this);
 
         this.form = this.shadowRoot.querySelector('#form');
         this.stopwatchName = this.shadowRoot.querySelector('#stopwatch-name');
@@ -49,6 +50,11 @@ class StopwatchList extends HTMLElement {
             localStorage.setItem('timer', JSON.stringify([]));
             this.lastTimerId = 0;
         }
+
+        if (timer.length >= 10) {
+            this.submitButton.setAttribute("disabled", "disabled");
+            this.submitButton.setAttribute("style", "background-color:#CCCCCC; border-color:transparent");
+        }
     }
 
     connectedCallback() {
@@ -62,6 +68,7 @@ class StopwatchList extends HTMLElement {
         stopwatch.setAttribute('id', "stopwatch-" + this.lastTimerId);
         stopwatch.setAttribute('name', stopwatchName);
         stopwatch.setAttribute('state', 'stop');
+        stopwatch.enableCreateButton = this.enableCreateButton;
 
         this.container.appendChild(stopwatch);
 
@@ -78,6 +85,11 @@ class StopwatchList extends HTMLElement {
 
         localStorage.setItem('timer', JSON.stringify(timer));
         this.lastTimerId++;
+
+        if (timer.length >= 10) {
+            this.submitButton.setAttribute("disabled", "disabled");
+            this.submitButton.setAttribute("style", "background-color:#CCCCCC; border-color:transparent");
+        }
     }
 
     //untuk memanggil stopwatch dari local storage ketika tab dibuka
@@ -95,9 +107,14 @@ class StopwatchList extends HTMLElement {
             stopwatch.setAttribute('name', timer[i].name);
             stopwatch.setAttribute('state', timer[i].state);
             stopwatch.setAttribute('time', timer[i].time);
-
+            stopwatch.enableCreateButton = this.enableCreateButton;
             this.container.appendChild(stopwatch);
         }
+    }
+
+    enableCreateButton() {
+        this.submitButton.removeAttribute("disabled");
+        this.submitButton.setAttribute("style", "background-color:#191BA9; border-color:#191BA9;")
     }
 }
 
