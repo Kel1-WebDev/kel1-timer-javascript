@@ -10,7 +10,9 @@ stopwatchListTemplate.innerHTML = `
             <h1 id="title">cronômetro</h1>
         </div>
         <div class="row">
-            <div id="container"></div>
+            <div class="fixed-list">
+                <div id="container"></div>
+            </div>
             <div>
                 <div id="form">
                     <form>
