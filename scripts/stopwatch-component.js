@@ -69,6 +69,8 @@ class Stopwatch extends HTMLElement {
         });
 
         localStorage.setItem('timer', JSON.stringify(timer));
+
+        this.enableCreateButton();
     }
 
     deactivateSiblings() {
