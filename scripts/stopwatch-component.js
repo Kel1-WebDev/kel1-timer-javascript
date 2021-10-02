@@ -1,6 +1,10 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
+    <style>
+        @import url("styles/history.css");
+    </style>
+
     <div>
 		<p name>0<p>
 		<button delete>-</button>
@@ -8,7 +12,10 @@ template.innerHTML = `
 		<button start>Start</button>
 		<button stop>Stop</button>
         <div>
-            <p history>History</p>
+            <div history class="history"> 
+                <button showHistory class="accordion"> <span> ▶ </span> History  </button>
+                <div historyList class="history-list"> </div>
+            </div>
         </div>
     </div>
   `;
@@ -21,6 +28,7 @@ class Stopwatch extends HTMLElement {
         this.stop = this.stop.bind(this);
         this.incrementTime = this.incrementTime.bind(this);
         this.deleteTimer = this.deleteTimer.bind(this);
+        this.toggleHistory = this.toggleHistory.bind(this);
 
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -30,15 +38,21 @@ class Stopwatch extends HTMLElement {
 
         this.deleteBtn = this.shadowRoot.querySelector('[delete]');
 
+        this.showHistoryBtn = this.shadowRoot.querySelector('[showHistory]');
+
         this.timeDisplay = this.shadowRoot.querySelector('[time]');
         this.nameDisplay = this.shadowRoot.querySelector('[name]');
         this.historyDisplay = this.shadowRoot.querySelector('[history]');
+        this.historyList = this.shadowRoot.querySelector('[historyList]');
+
+        this.showHistory = false;
     }
 
     connectedCallback() {
         this.startBtn.addEventListener('click', this.start);
         this.stopBtn.addEventListener('click', this.stop);
         this.deleteBtn.addEventListener('click', this.deleteTimer);
+        this.showHistoryBtn.addEventListener('click', this.toggleHistory);
 
         const state = this.getAttribute('state');
 
@@ -136,8 +150,17 @@ class Stopwatch extends HTMLElement {
 
         //show history
         const history = document.createElement("li");
-        history.innerText = this.formatTime(this.getAttribute('time'));
-        this.historyDisplay.appendChild(history);
+        const historyDuration = document.createElement("span");
+            
+        historyDuration.innerText = this.formatTime(this.getAttribute('time'));
+        history.appendChild(historyDuration);
+        this.historyList.appendChild(history);
+
+        if (this.showHistory === true) {
+            this.historyList.setAttribute('style', 'display: block');
+        } else {
+            this.historyList.setAttribute('style', 'display: none');
+        }
 
         //reset
         this.setAttribute('time', 0);
@@ -201,6 +224,18 @@ class Stopwatch extends HTMLElement {
         }
 
         localStorage.setItem('timer', JSON.stringify(timer));
+    }
+
+    toggleHistory() {
+        this.showHistory = !this.showHistory;
+
+        if (this.showHistory === true) {
+            this.showHistoryBtn.children[0].textContent = '▼';
+            this.historyList.setAttribute('style', 'display: block');
+        } else {
+            this.showHistoryBtn.children[0].textContent = '▶';
+            this.historyList.setAttribute('style', 'display: none');
+        }
     }
 }
 

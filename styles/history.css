@@ -1,0 +1,41 @@
+@import url("http://fonts.cdnfonts.com/css/led-digital-7");
+
+.history {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.accordion {
+  background-color: transparent;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  margin-bottom: 0.5em;
+  line-height: 1.5rem;
+}
+
+.accordion span {
+  color: #191ba9;
+  font-size: 18px;
+  padding-right: 10px;
+}
+
+.history-list {
+  margin-left: 0.5em;
+}
+
+.history-list li {
+  list-style-type: decimal;
+  font-size: 20px;
+  margin-bottom: 0.25em;
+}
+
+.history-list li span {
+  font-family: "LED Digital 7";
+  font-size: 24px;
+  letter-spacing: 0.1em;
+  padding-left: 3px;
+}
