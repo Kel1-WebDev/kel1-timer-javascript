@@ -1,0 +1,41 @@
+.timer{
+    position: absolute;
+    width: 355px;
+    height: 354px;
+    left: 291px;
+    top: 176px;
+}
+
+.dark-blue{
+    color: #191BA9;
+}
+
+.name {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 42px;
+/* identical to box height */
+
+    display: flex;
+    align-items: center;
+}
+@font-face {
+    font-family: 'Digital Numbers Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('DigitalNumbers-Regular.woff') format('woff');
+}
+
+.time{
+    font-family: 'Digital Numbers Regular';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 48px;
+    line-height: 62px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+

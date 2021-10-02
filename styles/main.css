@@ -1,0 +1,19 @@
+.center-content {
+	display: flex;
+	justify-content: center;
+}
+
+#title {
+	margin-top: 57px;
+	margin-bottom: 44px;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	column-gap: 190px;
+}
+
+#container {
+	width: 355px;
+}
