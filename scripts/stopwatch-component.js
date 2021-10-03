@@ -3,16 +3,24 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
         @import url("styles/history.css");
+        @import url("styles/timer.css");
     </style>
-
     <div>
-		<p name>0<p>
-		<button delete>-</button>
-		<p time>0<p>
-		<button start>Start</button>
-		<button stop>Stop</button>
+        <div class="container">
+		    <h1 name class="name dark-blue">0</h1>
+            <img delete class="del-btn" src="images/delete.svg">
+		</div>
         <div>
-            <div history class="history"> 
+            <div>
+                <p time class="time">0<p>
+                <div class="container">
+                    <img start class="timer-btn dark-blue" src="images/play.svg">
+		            <img stop class="timer-btn dark-blue" src="images/stop.svg">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div history class="history">
                 <button showHistory class="accordion"> <span> ▶ </span> History  </button>
                 <div historyList class="history-list"> </div>
             </div>
@@ -151,7 +159,7 @@ class Stopwatch extends HTMLElement {
         //show history
         const history = document.createElement("li");
         const historyDuration = document.createElement("span");
-            
+
         historyDuration.innerText = this.formatTime(this.getAttribute('time'));
         history.appendChild(historyDuration);
         this.historyList.appendChild(history);
