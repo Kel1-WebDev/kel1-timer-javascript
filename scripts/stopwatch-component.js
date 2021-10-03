@@ -11,7 +11,7 @@ template.innerHTML = `
             <img delete class="del-btn" src="images/delete.svg">
 		</div>
         <div>
-            <div>
+            <div class="blabla">
                 <p time class="time">0<p>
                 <div class="container">
                     <img start class="timer-btn" src="images/play.svg">

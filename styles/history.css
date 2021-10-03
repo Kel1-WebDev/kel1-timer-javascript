@@ -1,4 +1,5 @@
 @import url("http://fonts.cdnfonts.com/css/led-digital-7");
+@import url('http://fonts.cdnfonts.com/css/digital-7-mono');
 
 .history {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -34,7 +35,7 @@
 }
 
 .history-list li span {
-  font-family: "LED Digital 7";
+  font-family: 'Digital-7 Mono', sans-serif;
   font-size: 24px;
   letter-spacing: 0.1em;
   padding-left: 3px;
