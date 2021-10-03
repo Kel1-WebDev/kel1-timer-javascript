@@ -3,23 +3,30 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
         @import url("styles/history.css");
+        @import url("styles/timer.css");
     </style>
-
     <div>
-		<p name>0<p>
-		<button delete>-</button>
-		<p time>0<p>
-		<button start>Start</button>
-		<button stop>Stop</button>
+        <div class="container">
+		    <h1 name class="name dark-blue">0</h1>
+            <img delete class="del-btn" src="images/delete.svg">
+		</div>
         <div>
-            <div history class="history"> 
+            <div class="blabla">
+                <p time class="time">0<p>
+                <div class="container">
+                    <img start class="timer-btn" src="images/play.svg">
+		            <img stop class="timer-btn dark-blue" src="images/stop.svg">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div history class="history">
                 <button showHistory class="accordion"> <span> ▶ </span> History  </button>
                 <div historyList class="history-list"> </div>
             </div>
         </div>
     </div>
   `;
-
 class Stopwatch extends HTMLElement {
     constructor() {
         super();
@@ -57,12 +64,12 @@ class Stopwatch extends HTMLElement {
         const state = this.getAttribute('state');
 
         if (state === 'pause') {
-            this.startBtn.innerText = 'Resume';
+            this.startBtn.src = 'images/play.svg';
         } else if (state === 'start') {
             this.setAttribute('time', this.getDuration());
             this.interval = setInterval(this.incrementTime, 1000);
 
-            this.startBtn.innerText = 'Pause';
+            this.startBtn.src = 'images/pause.svg';
         }
 
         if (!this.hasAttribute('time')) {
@@ -131,7 +138,7 @@ class Stopwatch extends HTMLElement {
             this.setAttribute('state', 'start');
             this.interval = setInterval(this.incrementTime, 1000);
 
-            this.startBtn.innerText = 'Pause';
+            this.startBtn.src = 'images/pause.svg';
 
             this.deactivateSiblings();
         } else if (state === 'start') {
@@ -140,7 +147,7 @@ class Stopwatch extends HTMLElement {
 
             this.setLocalData();
 
-            this.startBtn.innerText = 'Resume';
+            this.startBtn.src = 'images/play.svg';
         }
     }
 
@@ -151,7 +158,7 @@ class Stopwatch extends HTMLElement {
         //show history
         const history = document.createElement("li");
         const historyDuration = document.createElement("span");
-            
+
         historyDuration.innerText = this.formatTime(this.getAttribute('time'));
         history.appendChild(historyDuration);
         this.historyList.appendChild(history);
@@ -167,7 +174,7 @@ class Stopwatch extends HTMLElement {
 
         this.setLocalData();
 
-        this.startBtn.innerText = 'Start';
+        this.startBtn.src = 'images/play.svg';
     }
 
     static get observedAttributes() {
