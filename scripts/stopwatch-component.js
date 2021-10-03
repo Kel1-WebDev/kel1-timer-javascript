@@ -14,7 +14,7 @@ template.innerHTML = `
             <div>
                 <p time class="time">0<p>
                 <div class="container">
-                    <img start class="timer-btn dark-blue" src="images/play.svg">
+                    <img start class="timer-btn" src="images/play.svg" onclick="this.src='images/pause.svg'">
 		            <img stop class="timer-btn dark-blue" src="images/stop.svg">
                 </div>
             </div>
@@ -27,7 +27,15 @@ template.innerHTML = `
         </div>
     </div>
   `;
-
+// function changeImage() {
+//     var image = document.getElementById('start-btn');
+//     if (image.src.match("images/play.svg")) {
+//         image.src = "images/pause.svg";
+//     }
+//     else {
+//         image.src = "images/play.svg";
+//     }
+// }
 class Stopwatch extends HTMLElement {
     constructor() {
         super();
