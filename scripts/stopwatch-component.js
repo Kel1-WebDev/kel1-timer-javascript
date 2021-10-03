@@ -14,7 +14,7 @@ template.innerHTML = `
             <div>
                 <p time class="time">0<p>
                 <div class="container">
-                    <img start class="timer-btn" src="images/play.svg" onclick="this.src='images/pause.svg'">
+                    <img start class="timer-btn" src="images/play.svg">
 		            <img stop class="timer-btn dark-blue" src="images/stop.svg">
                 </div>
             </div>
@@ -27,15 +27,6 @@ template.innerHTML = `
         </div>
     </div>
   `;
-// function changeImage() {
-//     var image = document.getElementById('start-btn');
-//     if (image.src.match("images/play.svg")) {
-//         image.src = "images/pause.svg";
-//     }
-//     else {
-//         image.src = "images/play.svg";
-//     }
-// }
 class Stopwatch extends HTMLElement {
     constructor() {
         super();
@@ -73,12 +64,12 @@ class Stopwatch extends HTMLElement {
         const state = this.getAttribute('state');
 
         if (state === 'pause') {
-            this.startBtn.innerText = 'Resume';
+            this.startBtn.src = 'images/play.svg';
         } else if (state === 'start') {
             this.setAttribute('time', this.getDuration());
             this.interval = setInterval(this.incrementTime, 1000);
 
-            this.startBtn.innerText = 'Pause';
+            this.startBtn.src = 'images/pause.svg';
         }
 
         if (!this.hasAttribute('time')) {
@@ -147,7 +138,7 @@ class Stopwatch extends HTMLElement {
             this.setAttribute('state', 'start');
             this.interval = setInterval(this.incrementTime, 1000);
 
-            this.startBtn.innerText = 'Pause';
+            this.startBtn.src = 'images/pause.svg';
 
             this.deactivateSiblings();
         } else if (state === 'start') {
@@ -156,7 +147,7 @@ class Stopwatch extends HTMLElement {
 
             this.setLocalData();
 
-            this.startBtn.innerText = 'Resume';
+            this.startBtn.src = 'images/play.svg';
         }
     }
 
@@ -183,7 +174,7 @@ class Stopwatch extends HTMLElement {
 
         this.setLocalData();
 
-        this.startBtn.innerText = 'Start';
+        this.startBtn.src = 'images/play.svg';
     }
 
     static get observedAttributes() {
