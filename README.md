@@ -78,7 +78,12 @@ cronômetro (in Italian) or commonly known as a stopwatch (in English) is an app
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+<div>
+	<img width="100%" src="images/usage.gif" />
+</div>
+
 To use this app, you can:
+
 1. Ceate a new stopwatch with your desired label
 2. Run the stopwatch. You can also pause the stopwatch at any time
 3. Stop the stopwatch
@@ -169,3 +174,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[product-video]: images/usage.gif
